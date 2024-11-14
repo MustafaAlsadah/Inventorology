@@ -70,7 +70,7 @@ export class AuthService {
       from: process.env.EMAIL_USER,
       to: email,
       subject: 'Inventorology: Password reset',
-      text: `Click here to reset your password: ${process.env.FRONTEND_URL}/reset-password/${user._id}\nYour OTP is: ${otp}`,
+      text: `Click here to reset your password: ${process.env.FRONTEND_URL}/reset-pass/${user.email}\n\nYour OTP is: ${otp}`,
     };
 
     await mailer.sendMail(mailOptions);

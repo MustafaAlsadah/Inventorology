@@ -1,0 +1,115 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-center text-gray-800">
+      {{
+        isForgotPassword ? 'Forgot Password' : isSignin ? 'Sign In' : 'Sign Up'
+      }}
+    </h2>
+
+    <form
+      class="space-y-4"
+      (submit)="onSubmit(); $event.preventDefault()"
+      *ngIf="!isForgotPassword"
+    >
+      <div *ngIf="!isSignin">
+        <label for="name" class="block text-sm font-medium text-gray-700"
+          >Name</label
+        >
+        <input
+          id="name"
+          type="text"
+          [(ngModel)]="name"
+          name="name"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your name"
+        />
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >Email</label
+        >
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your email"
+        />
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700"
+          >Password</label
+        >
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-md"
+        >
+          {{ isSignin ? 'Sign In' : 'Sign Up' }}
+        </button>
+      </div>
+    </form>
+
+    <form
+      class="space-y-4"
+      *ngIf="isForgotPassword"
+      (submit)="onForgotPasswordSubmit(); $event.preventDefault()"
+    >
+      <div>
+        <label for="reset-email" class="block text-sm font-medium text-gray-700"
+          >Enter your email</label
+        >
+        <input
+          id="reset-email"
+          type="email"
+          [(ngModel)]="resetEmail"
+          name="resetEmail"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your email"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-md"
+      >
+        Send Reset Link
+      </button>
+    </form>
+
+    <p class="text-center flex flex-col-reverse text-sm text-gray-600">
+      <span *ngIf="!isForgotPassword">
+        <button
+          class="text-blue-500 font-medium hover:underline cursor-pointer bg-transparent border-none p-0"
+          (click)="toggleForgotPasswordMode()"
+          (keyup.enter)="toggleForgotPasswordMode()"
+        >
+          Forgot Password?
+        </button>
+      </span>
+      <span *ngIf="!isForgotPassword">
+        {{ isSignin ? "Don't have an account?" : 'Already have an account?' }}
+        <a
+          class="text-blue-500 font-medium hover:underline cursor-pointer"
+          (click)="toggleAuthMode()"
+          (keydown.enter)="toggleAuthMode()"
+          tabindex="0"
+        >
+          {{ isSignin ? 'Sign Up' : 'Sign In' }}
+        </a>
+      </span>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div
+  class="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center"
+>
+  <!-- if logged out, don't show the username, show Welcome! only -->
+  <div>
+    <h1 class="text-xl font-semibold">Welcome!</h1>
+  </div>
+
+  <div *ngIf="isLoggedIn">
+    <button
+      class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-md shadow"
+      (click)="onLogout()"
+    >
+      Logout
+    </button>
+  </div>
+</div>

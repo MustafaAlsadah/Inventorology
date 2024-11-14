@@ -1,0 +1,343 @@
+<div class="min-h-screen bg-gray-100 p-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Products</h1>
+      <button
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
+        (click)="showAddProductModal = true"
+      >
+        Add Product
+      </button>
+    </div>
+
+    <p-dataView #dv [value]="(products$ | async) || []" layout="list">
+      <!-- List Layout -->
+      <ng-template pTemplate="list" let-products>
+        <div class="grid grid-nogutter">
+          <div
+            class="col-12"
+            *ngFor="let item of products; let first = first"
+            class="col-12"
+          >
+            <div
+              class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3"
+              [ngClass]="{ 'border-top-1 surface-border': !first }"
+            >
+              <!-- Product Image -->
+              <div class="md:w-10rem relative">
+                <img
+                  class="block xl:block mx-auto border-round w-full h-40 object-cover"
+                  [src]="item.image_url"
+                  [alt]="item.name"
+                />
+              </div>
+
+              <!-- Product Details -->
+              <div
+                class="flex w-full flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4"
+              >
+                <div>
+                  <div class="text-lg font-medium text-900">
+                    {{ item.name }}
+                  </div>
+                  <p class="text-gray-600 mt-2">
+                    {{ item.description || 'No description available.' }}
+                  </p>
+                </div>
+
+                <!-- Price and Actions -->
+                <div class="flex flex-column md:align-items-end gap-5">
+                  <span class="text-xl font-semibold text-900">{{
+                    '$' + item.price
+                  }}</span>
+                  <div class="flex flex-row gap-2">
+                    <button
+                      pButton
+                      icon="pi pi-pencil"
+                      class="p-button-warning p-mr-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md h-14"
+                      (click)="openEditProductModal(item)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      pButton
+                      icon="pi pi-trash"
+                      class="p-button-danger bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-md h-14"
+                      (click)="deleteProduct(item._id)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+
+    <ng-template pTemplate="emptymessage">
+      <p class="text-gray-500 text-center">No products found.</p>
+    </ng-template>
+
+    <ng-template #noProducts>
+      <p class="text-gray-500 text-center">No products found.</p>
+    </ng-template>
+  </div>
+
+  <ng-template #loading>
+    <p class="text-center">Loading products...</p>
+  </ng-template>
+</div>
+
+<!-- Add Product Modal -->
+<div
+  *ngIf="showAddProductModal"
+  class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center"
+>
+  <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Add Product</h2>
+    <form (ngSubmit)="uploadFile()" enctype="multipart/form-data">
+      <div class="mb-4">
+        <label for="file" class="block text-sm font-medium text-gray-700"
+          >Upload File</label
+        >
+        <input
+          type="file"
+          id="file"
+          (change)="onFileSelected($event)"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
+      >
+        Upload File
+      </button>
+    </form>
+
+    <form (submit)="addProduct(newProduct); $event.preventDefault()">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700"
+          >Name</label
+        >
+        <input
+          id="name"
+          type="text"
+          [(ngModel)]="newProduct.name"
+          name="name"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product name"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="sku" class="block text-sm font-medium text-gray-700"
+          >SKU</label
+        >
+        <input
+          id="sku"
+          type="text"
+          [(ngModel)]="newProduct.sku"
+          name="sku"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product sku"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="stock" class="block text-sm font-medium text-gray-700"
+          >stock</label
+        >
+        <input
+          id="stock"
+          type="text"
+          [(ngModel)]="newProduct.stock"
+          name="stock"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product stock"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label
+          for="min_stock_alert"
+          class="block text-sm font-medium text-gray-700"
+          >Alert threshold Stock</label
+        >
+        <input
+          id="min_stock_alert"
+          type="text"
+          [(ngModel)]="newProduct.min_stock_alert"
+          name="min_stock_alert"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product stock alert threshold"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="supplier_id" class="block text-sm font-medium text-gray-700"
+          >supplier id</label
+        >
+        <input
+          id="supplier_id"
+          type="text"
+          [(ngModel)]="newProduct.supplier"
+          name="supplier_id"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product supplier id"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="price" class="block text-sm font-medium text-gray-700"
+          >Price</label
+        >
+        <input
+          id="price"
+          type="number"
+          [(ngModel)]="newProduct.price"
+          name="price"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product price"
+        />
+      </div>
+
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-md"
+          (click)="showAddProductModal = false"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
+        >
+          Add Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  *ngIf="showEditProductModal"
+  class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center"
+>
+  <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Edit Product</h2>
+    <form (submit)="updateProduct(); $event.preventDefault()">
+      <!-- Name -->
+      <div class="mb-4">
+        <label for="edit-name" class="block text-sm font-medium text-gray-700"
+          >Name</label
+        >
+        <input
+          id="edit-name"
+          type="text"
+          [(ngModel)]="selectedProduct.name"
+          name="edit-name"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product name"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="edit-sku" class="block text-sm font-medium text-gray-700"
+          >SKU</label
+        >
+        <input
+          id="edit-sku"
+          type="text"
+          [(ngModel)]="selectedProduct.sku"
+          name="edit-sku"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product sku"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="edit-stock" class="block text-sm font-medium text-gray-700"
+          >stock</label
+        >
+        <input
+          id="edit-stock"
+          type="text"
+          [(ngModel)]="selectedProduct.stock"
+          name="edit-stock"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product stock"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label
+          for="edit-min_stock_alert"
+          class="block text-sm font-medium text-gray-700"
+          >Alert threshold Stock</label
+        >
+        <input
+          id="edit-min_stock_alert"
+          type="text"
+          [(ngModel)]="selectedProduct.min_stock_alert"
+          name="edit-min_stock_alert"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product stock alert threshold"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label
+          for="edit-supplier_id"
+          class="block text-sm font-medium text-gray-700"
+          >supplier id</label
+        >
+        <input
+          id="edit-supplier_id"
+          type="text"
+          [(ngModel)]="selectedProduct.supplier._id"
+          name="edit-supplier_id"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product supplier id"
+        />
+      </div>
+
+      <!-- Price -->
+      <div class="mb-4">
+        <label for="edit-price" class="block text-sm font-medium text-gray-700"
+          >Price</label
+        >
+        <input
+          id="edit-price"
+          type="number"
+          [(ngModel)]="selectedProduct.price"
+          name="edit-price"
+          class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter product price"
+        />
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-md"
+          (click)="showEditProductModal = false"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
+        >
+          Update Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

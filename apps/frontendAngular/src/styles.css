@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* PrimeNG Styles */
+@import 'primeng/resources/primeng.min.css';
+@import 'primeng/resources/themes/saga-blue/theme.css';
+
+/* PrimeIcons */
+@import 'primeicons/primeicons.css';

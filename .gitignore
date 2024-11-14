@@ -5,6 +5,8 @@ dist
 tmp
 /out-tsc
 .env
+Dockerfile
+penny-assessment-441521-3b8d0593110d.json
 
 # dependencies
 node_modules

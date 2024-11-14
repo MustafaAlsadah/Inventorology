@@ -10,7 +10,7 @@ export class Product extends Document {
   @Prop()
   description: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   sku: string;
 
   @Prop({ required: true })
@@ -30,6 +30,9 @@ export class Product extends Document {
 
   @Prop({ type: Types.ObjectId, ref: 'Supplier' })
   supplier: Supplier;
+
+  @Prop({ default: false, required: false })
+  image_url: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
