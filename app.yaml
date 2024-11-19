@@ -1,0 +1,10 @@
+runtime: nodejs16
+instance_class: F2
+env_variables:
+  NODE_ENV: production
+handlers:
+  - url: /
+    static_files: dist/apps/frontendAngular/index.html
+    upload: dist/apps/frontendAngular/index.html
+  - url: /
+    static_dir: dist/apps/frontendAngular

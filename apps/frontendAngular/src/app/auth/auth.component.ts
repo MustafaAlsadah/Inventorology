@@ -50,8 +50,9 @@ export class AuthComponent {
 
   onSubmit() {
     const endpoint = this.isSignin
-      ? 'http://localhost:8080/api/auth/signin' // Backend signin endpoint
-      : 'http://localhost:8080/api/auth/signup'; // Backend signup endpoint
+      ? 'https://backend-pu7ouxweoa-wx.a.run.app/api/auth/signin' // Backend signin endpoint
+      : 'https://backend-pu7ouxweoa-wx.a.run.app/api/auth/signup'; // Backend signup endpoint
+    console.log(endpoint);
 
     const payload = this.isSignin
       ? { email: this.email, password: this.password }
@@ -80,9 +81,12 @@ export class AuthComponent {
 
   onForgotPasswordSubmit(): void {
     this.http
-      .post('http://localhost:8080/api/auth/send-password-reset-email', {
-        email: this.resetEmail,
-      })
+      .post(
+        'https://backend-pu7ouxweoa-wx.a.run.app/api/auth/send-password-reset-email',
+        {
+          email: this.resetEmail,
+        }
+      )
       .subscribe({
         next: () => {
           alert('Password reset email sent.');

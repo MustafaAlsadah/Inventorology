@@ -12,14 +12,7 @@ export class AppController {
   private storage: Storage;
   private bucketName = 'penny-assessment-products';
   constructor(private readonly appService: AppService) {
-    this.storage = new Storage({
-      keyFilename: join(
-        dirname(__dirname),
-        '..',
-        '..',
-        'penny-assessment-441521-3b8d0593110d.json'
-      ),
-    });
+    this.storage = new Storage();
   }
 
   @Post('upload')

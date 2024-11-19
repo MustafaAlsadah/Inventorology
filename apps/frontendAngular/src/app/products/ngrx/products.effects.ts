@@ -17,11 +17,14 @@ export class ProductsEffects {
       ofType(ProductActions.loadProducts),
       mergeMap(() =>
         this.http
-          .get<Product[]>('http://localhost:8080/api/products', {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-            },
-          })
+          .get<Product[]>(
+            'https://backend-pu7ouxweoa-wx.a.run.app/api/products',
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+              },
+            }
+          )
           .pipe(
             map((products) => ProductActions.loadProductsSuccess({ products })),
             catchError((error) =>
@@ -37,11 +40,15 @@ export class ProductsEffects {
       ofType(ProductActions.addProduct),
       mergeMap(({ product }) =>
         this.http
-          .post<Product>('http://localhost:8080/api/products', product, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-            },
-          })
+          .post<Product>(
+            'https://backend-pu7ouxweoa-wx.a.run.app/api/products',
+            product,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+              },
+            }
+          )
           .pipe(
             map((newProduct) =>
               ProductActions.addProductSuccess({ product: newProduct })
@@ -59,11 +66,14 @@ export class ProductsEffects {
       ofType(ProductActions.deleteProduct),
       mergeMap(({ id }) =>
         this.http
-          .delete(`http://localhost:8080/api/products/${id}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-            },
-          })
+          .delete(
+            `https://backend-pu7ouxweoa-wx.a.run.app/api/products/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+              },
+            }
+          )
           .pipe(
             map(() => ProductActions.deleteProductSuccess({ id })),
             catchError((error) =>
@@ -80,7 +90,7 @@ export class ProductsEffects {
       mergeMap(({ product }) =>
         this.http
           .patch<Product>(
-            `http://localhost:8080/api/products/${product._id}`,
+            `https://backend-pu7ouxweoa-wx.a.run.app/api/products/${product._id}`,
             product,
             {
               headers: {

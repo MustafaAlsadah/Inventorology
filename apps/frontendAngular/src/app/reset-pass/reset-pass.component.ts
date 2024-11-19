@@ -37,11 +37,14 @@ export class ResetPassComponent {
     }
 
     this.http
-      .patch('http://localhost:8080/api/auth/password-reset', {
-        email: this.email,
-        new_password: this.newPassword,
-        entered_otp: this.otp,
-      })
+      .patch(
+        'https://backend-pu7ouxweoa-wx.a.run.app/api/auth/password-reset',
+        {
+          email: this.email,
+          new_password: this.newPassword,
+          entered_otp: this.otp,
+        }
+      )
       .subscribe({
         next: () => {
           alert('Password reset successful!');

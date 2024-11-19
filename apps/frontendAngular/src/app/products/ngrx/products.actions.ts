@@ -1,4 +1,3 @@
-// src/app/store/products.actions.ts
 import { createAction, props } from '@ngrx/store';
 import { Product } from '../products.component';
 

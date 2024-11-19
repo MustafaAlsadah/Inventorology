@@ -4,7 +4,7 @@ import { EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { logout } from '../products/ngrx/products.reducer';
-import { isLoggedInState } from '../products/ngrx/products.reducer';
+import { isLoggedIn } from '../products/ngrx/products.reducer';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +20,7 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private store: Store<{ loggedInReducer: isLoggedInState }>
+    private store: Store<{ loggedInReducer: isLoggedIn }>
   ) {
     this.store.select('loggedInReducer').subscribe((state) => {
       console.log(state);

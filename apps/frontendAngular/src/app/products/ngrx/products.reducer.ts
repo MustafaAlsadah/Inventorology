@@ -21,11 +21,11 @@ export const initialState: ProductsState = {
   error: null,
 };
 
-export interface isLoggedInState {
+export interface isLoggedIn {
   isLogged: boolean;
 }
 
-export const initialLoggedInState: isLoggedInState = {
+export const initialLoggedInState: isLoggedIn = {
   isLogged: localStorage.getItem('authToken') !== null,
 };
 

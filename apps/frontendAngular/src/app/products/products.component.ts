@@ -96,17 +96,19 @@ export class ProductsComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    this.http.post('http://localhost:8080/api/upload', formData).subscribe({
-      next: (response: any) => {
-        this.newProduct.image_url = response.url;
-        console.log('newProduct', this.newProduct);
-        alert('File uploaded');
-      },
-      error: (err) => {
-        console.error('Error uploading file', err);
-        alert('Error uploading file');
-      },
-    });
+    this.http
+      .post('https://backend-pu7ouxweoa-wx.a.run.app/api/upload', formData)
+      .subscribe({
+        next: (response: any) => {
+          this.newProduct.image_url = response.url;
+          console.log('newProduct', this.newProduct);
+          alert('File uploaded');
+        },
+        error: (err) => {
+          console.error('Error uploading file', err);
+          alert('Error uploading file');
+        },
+      });
   }
 
   ngOnInit() {
@@ -116,7 +118,7 @@ export class ProductsComponent implements OnInit {
 
   fetchProducts() {
     this.products$ = this.http.get<Product[]>(
-      'http://localhost:8080/api/products',
+      'https://backend-pu7ouxweoa-wx.a.run.app/api/products',
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -130,7 +132,7 @@ export class ProductsComponent implements OnInit {
     this.showAddProductModal = false;
     // console.log('Adding product', this.newProduct);
     // this.http
-    //   .post<Product>('http://localhost:8080/api/products', this.newProduct, {
+    //   .post<Product>('https://backend-pu7ouxweoa-wx.a.run.app/api/products', this.newProduct, {
     //     headers: {
     //       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
     //     },
@@ -162,7 +164,7 @@ export class ProductsComponent implements OnInit {
   deleteProduct(id: string) {
     this.store.dispatch(deleteProduct({ id }));
     // this.http
-    //   .delete(`http://localhost:8080/api/products/${id}`, {
+    //   .delete(`https://backend-pu7ouxweoa-wx.a.run.app/api/products/${id}`, {
     //     headers: {
     //       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
     //     },
@@ -183,7 +185,7 @@ export class ProductsComponent implements OnInit {
   editProduct(product: Product) {
     this.store.dispatch(updateProduct({ product }));
     // this.http
-    //   .patch(`http://localhost:8080/api/products/${product._id}`, product, {
+    //   .patch(`https://backend-pu7ouxweoa-wx.a.run.app/api/products/${product._id}`, product, {
     //     headers: {
     //       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
     //     },
